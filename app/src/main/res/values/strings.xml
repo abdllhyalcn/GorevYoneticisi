@@ -2,4 +2,7 @@
     <string name="app_name">Görev Yöneticisi</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="gunluk">Günlük</string>
+    <string name="haftalik">Haftalık</string>
+    <string name="aylik">Aylık</string>
 </resources>
