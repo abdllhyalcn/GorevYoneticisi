@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_gunluk"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="@string/gunluk" />
+    <item
+        android:id="@+id/navigation_haftalik"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_week"
+        android:title="@string/haftalik" />
+    <item
+        android:id="@+id/navigation_aylik"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_month"
+        android:title="@string/aylik" />
+
+
+</menu>

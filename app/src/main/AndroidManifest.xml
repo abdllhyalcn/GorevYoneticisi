@@ -12,7 +12,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.GörevYöneticisi.NoActionBar">
+            android:theme="@style/Theme.GörevYöneticisi">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

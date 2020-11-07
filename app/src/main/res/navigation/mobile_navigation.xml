@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_gunluk">
+
+    <fragment
+        android:id="@+id/navigation_gunluk"
+        android:name="com.example.gorevyoneticisi.ui.gunluk.Gunluk"
+        android:label="@string/gunluk"
+        tools:layout="@layout/gunluk_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_haftalik"
+        android:name="com.example.gorevyoneticisi.ui.haftalik.Haftalik"
+        android:label="@string/haftalik"
+        tools:layout="@layout/haftalik_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_aylik"
+        android:name="com.example.gorevyoneticisi.ui.aylik.Aylik"
+        android:label="@string/aylik"
+        tools:layout="@layout/aylik_fragment" />
+</navigation>
