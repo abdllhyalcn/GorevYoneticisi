@@ -1,4 +1,4 @@
-package com.example.gorevyoneticisi;
+package com.example.gorevyoneticisi.ui.gunluk;
 
 import androidx.lifecycle.ViewModel;
 
