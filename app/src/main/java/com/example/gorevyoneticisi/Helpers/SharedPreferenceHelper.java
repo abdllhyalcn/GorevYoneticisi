@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SharedPreferenceHelper {
@@ -49,7 +50,7 @@ public class SharedPreferenceHelper {
     }
 
     public List<GorevModel> getList() {
-        List<GorevModel> arrayItems = null;
+        List<GorevModel> arrayItems = new ArrayList<GorevModel>();
 
         String serializedObject = sharedPreferences.getString(sharedName.name(), null);
         if (serializedObject != null) {

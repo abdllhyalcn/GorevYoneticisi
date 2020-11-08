@@ -33,6 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper.SharedName.AYLIK;
+import static com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper.SharedName.GUNLUK;
+import static com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper.SharedName.HAFTALIK;
+
 public class MainActivity extends AppCompatActivity implements AddDialog.AddDialogListener {
 
     Logger logger = Logger.getLogger("Log");
@@ -40,9 +44,11 @@ public class MainActivity extends AppCompatActivity implements AddDialog.AddDial
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
 
-    private List<GorevModel> gorevModelList;
+    private List<GorevModel> gorevGunlukList;
+    private List<GorevModel> gorevHaftalikList;
+    private List<GorevModel> gorevAylikList;
 
-    SharedPreferenceHelper sharedPreferenceHelper;
+    private SharedPreferenceHelper.SharedName sharedName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +57,12 @@ public class MainActivity extends AppCompatActivity implements AddDialog.AddDial
         BottomNavigationView navView = findViewById(R.id.nav_view);
         FloatingActionButton addButton = findViewById(R.id.addButton);
 
-        sharedPreferenceHelper = new SharedPreferenceHelper(this, SharedPreferenceHelper.SharedName.GUNLUK);
+        gorevGunlukList = getList(GUNLUK);
+        gorevHaftalikList = getList(HAFTALIK);
+        gorevAylikList = getList(AYLIK);
+
 
         initRecylerView();
-
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,23 +77,24 @@ public class MainActivity extends AppCompatActivity implements AddDialog.AddDial
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_gunluk:
-                        storeData();
-                        sharedPreferenceHelper.setSharedPref(SharedPreferenceHelper.SharedName.GUNLUK);
-                        setmAdapter();
-                        return true;
+                        sharedName = GUNLUK;
+                        mAdapter = new MyAdapter(gorevGunlukList, sharedName);
+                        recyclerView.setAdapter(mAdapter);
+                        break;
                     case R.id.navigation_haftalik:
-                        storeData();
-                        sharedPreferenceHelper.setSharedPref(SharedPreferenceHelper.SharedName.HAFTALIK);
-                        setmAdapter();
-                        return true;
+                        sharedName = HAFTALIK;
+                        mAdapter = new MyAdapter(gorevHaftalikList, sharedName);
+                        recyclerView.setAdapter(mAdapter);
+                        break;
                     case R.id.navigation_aylik:
-                        storeData();
-                        sharedPreferenceHelper.setSharedPref(SharedPreferenceHelper.SharedName.AYLIK);
-                        setmAdapter();
-                        return true;
+                        sharedName = AYLIK;
+                        mAdapter = new MyAdapter(gorevAylikList, sharedName);
+                        recyclerView.setAdapter(mAdapter);
+                        break;
+
                 }
 
-                return false;
+                return true;
             }
         });
 
@@ -96,8 +105,32 @@ public class MainActivity extends AppCompatActivity implements AddDialog.AddDial
     public void onDialogPositiveClick(GorevModel gorevModel) {
         if (gorevModel == null) {
             Toast.makeText(MainActivity.this, "Görev Alınamadı!", Toast.LENGTH_LONG).show();
+        } else {
+            switch (sharedName){
+                case GUNLUK:
+                    gorevGunlukList.add(gorevModel);
+                    break;
+                case HAFTALIK:
+                    gorevHaftalikList.add(gorevModel);
+                    break;
+                case AYLIK:
+                    gorevAylikList.add(gorevModel);
+                    break;
+            }
+            mAdapter.notifyDataSetChanged();
+
         }
 
+    }
+
+    private List<GorevModel> getList(SharedPreferenceHelper.SharedName sharedName) {
+        SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(this, sharedName);
+        return sharedPreferenceHelper.getList();
+    }
+
+    private void saveList(List<GorevModel> data, SharedPreferenceHelper.SharedName sharedName) {
+        SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(this, sharedName);
+        sharedPreferenceHelper.setList(data);
     }
 
     private void initRecylerView() {
@@ -106,28 +139,18 @@ public class MainActivity extends AppCompatActivity implements AddDialog.AddDial
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        gorevModelList = new ArrayList<GorevModel>();
+        sharedName = GUNLUK;
+        mAdapter = new MyAdapter(gorevGunlukList, sharedName);
 
-        mAdapter = new MyAdapter(gorevModelList);
 
         recyclerView.setAdapter(mAdapter);
-
-        setmAdapter();
-    }
-
-    private void setmAdapter() {
-        gorevModelList = sharedPreferenceHelper.getList();
-        mAdapter.notifyDataSetChanged();
-    }
-
-    private void storeData() {
-        sharedPreferenceHelper.setList(gorevModelList);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-
+    protected void onStop() {
+        super.onStop();
+        saveList(gorevGunlukList, GUNLUK);
+        saveList(gorevHaftalikList, HAFTALIK);
+        saveList(gorevAylikList, AYLIK);
     }
 }

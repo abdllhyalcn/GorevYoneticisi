@@ -37,7 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu">
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="selected">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 

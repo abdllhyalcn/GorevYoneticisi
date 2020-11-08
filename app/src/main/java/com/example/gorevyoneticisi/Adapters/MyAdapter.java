@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper;
 import com.example.gorevyoneticisi.Models.GorevModel;
 import com.example.gorevyoneticisi.R;
 import com.google.android.material.card.MaterialCardView;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private List<GorevModel> mDataset;
+    private SharedPreferenceHelper.SharedName sharedName;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -30,19 +32,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            cardView=itemView.findViewById(R.id.cardView);
-            imageView=itemView.findViewById(R.id.imageView);
-            priorityImage=itemView.findViewById(R.id.priorityImage);
-            gorevText=itemView.findViewById(R.id.gorevText);
-            tarihText=itemView.findViewById(R.id.tarihText);
-            priorityText=itemView.findViewById(R.id.priorityText);
-            delete=itemView.findViewById(R.id.delete);
+            cardView = itemView.findViewById(R.id.cardView);
+            imageView = itemView.findViewById(R.id.imageView);
+            priorityImage = itemView.findViewById(R.id.priorityImage);
+            gorevText = itemView.findViewById(R.id.gorevText);
+            tarihText = itemView.findViewById(R.id.tarihText);
+            priorityText = itemView.findViewById(R.id.priorityText);
+            delete = itemView.findViewById(R.id.delete);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(List<GorevModel> myDataset) {
+    public MyAdapter(List<GorevModel> myDataset, SharedPreferenceHelper.SharedName mSharedName) {
         mDataset = myDataset;
+        sharedName = mSharedName;
     }
 
     // Create new views (invoked by the layout manager)
