@@ -20,11 +20,11 @@ public class GorevModel {
         this.tarih = tarih;
     }
 
-    public Priority isAktif() {
+    public Priority getPriority() {
         return oncelik;
     }
 
-    public void setAktif(Priority oncelik) {
+    public void setPriority(Priority oncelik) {
         this.oncelik = oncelik;
     }
 
