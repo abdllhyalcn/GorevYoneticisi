@@ -1,5 +1,7 @@
 package com.example.gorevyoneticisi.Adapters;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper;
 import com.example.gorevyoneticisi.Models.GorevModel;
 import com.example.gorevyoneticisi.R;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +27,15 @@ import java.util.Locale;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private List<GorevModel> mDataset;
     private SharedPreferenceHelper.SharedName sharedName;
+
+    private Context context;
+
+    onDeleteClickedListener callback;
+
+    public interface onDeleteClickedListener {
+        void deleteClicked(int position);
+    }
+
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView, priorityImage;
@@ -41,7 +53,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    public MyAdapter(List<GorevModel> myDataset, SharedPreferenceHelper.SharedName mSharedName) {
+    public MyAdapter(Context context,  List<GorevModel> myDataset, SharedPreferenceHelper.SharedName mSharedName) {
+        this.context = context;
+        this.callback=(onDeleteClickedListener) context;
         mDataset = myDataset;
         sharedName = mSharedName;
     }
@@ -57,6 +71,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MaterialAlertDialogBuilder(context)
+                        .setTitle("Onay")
+                        .setMessage("Görevi silmek istediğinize emin misiniz?")
+                        .setNeutralButton("İptal", null)
+                        .setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                callback.deleteClicked(position);
+                            }
+                        }).show();
+            }
+        });
 
         holder.gorevText.setText(mDataset.get(position).getGorev());
 
