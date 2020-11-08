@@ -1,12 +1,14 @@
 package com.example.gorevyoneticisi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.gorevyoneticisi.Adapters.MyAdapter;
+import com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper;
 import com.example.gorevyoneticisi.Models.GorevModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -25,20 +27,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity {
 
-    enum SharedName{
-        GUNLUK,
-        HAFTALIK,
-        AYLIK
-    }
-
-    private SharedName SHARED_NAME=SharedName.GUNLUK;
+    Logger logger = Logger.getLogger("Log");
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    SharedPreferenceHelper sharedPreferenceHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,20 +46,23 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         recyclerView = findViewById(R.id.my_recycler_view);
 
+        sharedPreferenceHelper = new SharedPreferenceHelper(this, SharedPreferenceHelper.SharedName.GUNLUK);
+
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.navigation_gunluk:
-                        SHARED_NAME=SharedName.GUNLUK;
+                        sharedPreferenceHelper.setSharedPref(SharedPreferenceHelper.SharedName.GUNLUK);
                         break;
                     case R.id.navigation_haftalik:
-                        SHARED_NAME=SharedName.HAFTALIK;
+                        sharedPreferenceHelper.setSharedPref(SharedPreferenceHelper.SharedName.HAFTALIK);
                         break;
                     case R.id.navigation_aylik:
-                        SHARED_NAME=SharedName.AYLIK;
+                        sharedPreferenceHelper.setSharedPref(SharedPreferenceHelper.SharedName.AYLIK);
                         break;
                 }
+
                 return false;
             }
         });
@@ -79,9 +81,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
-        return super.onCreateView(name, context, attrs);
+    protected void onStart() {
+        super.onStart();
+
+
     }
 }
