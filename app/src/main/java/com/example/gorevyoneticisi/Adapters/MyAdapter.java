@@ -65,8 +65,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.gorevText.setText(mDataset.get(position).getGorev());
-        holder.tarihText.setText(null);
-        holder.priorityText.setText("High");
+        holder.tarihText.setText(mDataset.get(position).getTarih().toString());
+        switch (mDataset.get(position).getPriority()){
+            case DUSUK:
+                holder.priorityText.setText("DÜŞÜK");
+                holder.priorityImage.setBackgroundResource(R.drawable.ic_action_downward);
+                break;
+            case ORTA:
+                holder.priorityText.setText("ORTA");
+                holder.priorityImage.setBackgroundResource(R.drawable.ic_action_right);
+                break;
+            case YUKSEK:
+                holder.priorityText.setText("YÜKSEK");
+                holder.priorityImage.setBackgroundResource(R.drawable.ic_action_upward);
+                break;
+        }
 
 
     }
