@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.gorevyoneticisi.Adapters.MyAdapter;
 import com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper;
@@ -13,6 +14,7 @@ import com.example.gorevyoneticisi.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -31,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddDialog.AddDialogListener {
 
     Logger logger = Logger.getLogger("Log");
 
@@ -87,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    public void onDialogPositiveClick(GorevModel gorevModel) {
+        if (gorevModel == null) {
+            Toast.makeText(MainActivity.this, "Görev Alınamadı!", Toast.LENGTH_LONG).show();
+        }
 
     }
 
