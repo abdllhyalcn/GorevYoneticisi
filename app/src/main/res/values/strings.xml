@@ -5,4 +5,17 @@
     <string name="haftalik">Haftalık</string>
     <string name="aylik">Aylık</string>
 
+    <string name="fab_content_desc">Ekle</string>
+
+    <string name="gorev_title">Görev</string>
+    <string name="hemen_baslat">Hemen Başlat</string>
+    <string name="aktif">Aktif</string>
+    <string name="bitis_saati">Bitiş Saati</string>
+
+    <string name="NonNull">Bu alan boş bırakılamaz.</string>
+    <string name="kaldir">Kaldır</string>
+    <string name="yuksek_oncelik">Yüksek Öncelik</string>
+    <string name="orta_oncelik">Orta Öncelik</string>
+    <string name="dusuk_oncelik">Düşük Öncelik</string>
+
 </resources>
