@@ -1,7 +1,6 @@
-package com.example.gorevyoneticisi;
+package com.example.gorevyoneticisi.ui;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MenuItem;
@@ -10,14 +9,17 @@ import android.view.View;
 import com.example.gorevyoneticisi.Adapters.MyAdapter;
 import com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper;
 import com.example.gorevyoneticisi.Models.GorevModel;
+import com.example.gorevyoneticisi.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -35,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+
+    private List<GorevModel> gorevModelList;
 
     SharedPreferenceHelper sharedPreferenceHelper;
 
@@ -44,41 +47,71 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        recyclerView = findViewById(R.id.my_recycler_view);
+        FloatingActionButton addButton = findViewById(R.id.addButton);
 
         sharedPreferenceHelper = new SharedPreferenceHelper(this, SharedPreferenceHelper.SharedName.GUNLUK);
+
+        initRecylerView();
+
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment newFragment = new AddDialog();
+                newFragment.show(getSupportFragmentManager(), "AddDialog");
+            }
+        });
 
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_gunluk:
+                        storeData();
                         sharedPreferenceHelper.setSharedPref(SharedPreferenceHelper.SharedName.GUNLUK);
-                        break;
+                        setmAdapter();
+                        return true;
                     case R.id.navigation_haftalik:
+                        storeData();
                         sharedPreferenceHelper.setSharedPref(SharedPreferenceHelper.SharedName.HAFTALIK);
-                        break;
+                        setmAdapter();
+                        return true;
                     case R.id.navigation_aylik:
+                        storeData();
                         sharedPreferenceHelper.setSharedPref(SharedPreferenceHelper.SharedName.AYLIK);
-                        break;
+                        setmAdapter();
+                        return true;
                 }
 
                 return false;
             }
         });
 
+
+    }
+
+    private void initRecylerView() {
+        recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        List<GorevModel> gorevModelList = new ArrayList<GorevModel>();
+        gorevModelList = new ArrayList<GorevModel>();
 
-        gorevModelList.add(new GorevModel(GorevModel.Priority.ORTA, "BİRİNCİ", null));
-        gorevModelList.add(new GorevModel(GorevModel.Priority.ORTA, "İKİNCİ", null));
-        // specify an adapter (see also next example)
         mAdapter = new MyAdapter(gorevModelList);
+
         recyclerView.setAdapter(mAdapter);
 
+        setmAdapter();
+    }
+
+    private void setmAdapter() {
+        gorevModelList = sharedPreferenceHelper.getList();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void storeData() {
+        sharedPreferenceHelper.setList(gorevModelList);
     }
 
     @Override
