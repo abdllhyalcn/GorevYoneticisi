@@ -1,5 +1,6 @@
 package com.example.gorevyoneticisi.Adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper;
@@ -14,25 +16,22 @@ import com.example.gorevyoneticisi.Models.GorevModel;
 import com.example.gorevyoneticisi.R;
 import com.google.android.material.card.MaterialCardView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private List<GorevModel> mDataset;
     private SharedPreferenceHelper.SharedName sharedName;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        MaterialCardView cardView;
         ImageView imageView, priorityImage;
         TextView gorevText, tarihText, priorityText;
         Button delete;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            cardView = itemView.findViewById(R.id.cardView);
             imageView = itemView.findViewById(R.id.imageView);
             priorityImage = itemView.findViewById(R.id.priorityImage);
             gorevText = itemView.findViewById(R.id.gorevText);
@@ -42,31 +41,32 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public MyAdapter(List<GorevModel> myDataset, SharedPreferenceHelper.SharedName mSharedName) {
         mDataset = myDataset;
         sharedName = mSharedName;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
-        // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view, parent, false);
 
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
+
         holder.gorevText.setText(mDataset.get(position).getGorev());
-        holder.tarihText.setText(mDataset.get(position).getTarih().toString());
-        switch (mDataset.get(position).getPriority()){
+
+        holder.tarihText.setText(getTime(mDataset.get(position).getTarih()));
+        if (mDataset.get(position).isDateExpired(sharedName)) {
+            holder.tarihText.setTextColor(holder.tarihText.getContext().getResources().getColor(R.color.red));
+        } else {
+            holder.tarihText.setTextColor(holder.tarihText.getContext().getResources().getColor(R.color.green));
+        }
+        switch (mDataset.get(position).getPriority()) {
             case DUSUK:
                 holder.priorityText.setText("DÜŞÜK");
                 holder.priorityImage.setBackgroundResource(R.drawable.ic_action_downward);
@@ -80,11 +80,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 holder.priorityImage.setBackgroundResource(R.drawable.ic_action_upward);
                 break;
         }
-
-
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    private String getTime(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("dd MMM yy HH:mm", Locale.getDefault());
+        return df.format(date);
+    }
+
     @Override
     public int getItemCount() {
         return mDataset.size();

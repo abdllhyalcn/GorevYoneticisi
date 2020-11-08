@@ -1,6 +1,13 @@
 package com.example.gorevyoneticisi.Models;
 
+import com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper;
+
+import java.util.Calendar;
 import java.util.Date;
+
+import static com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper.SharedName.AYLIK;
+import static com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper.SharedName.GUNLUK;
+import static com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper.SharedName.HAFTALIK;
 
 
 public class GorevModel {
@@ -9,6 +16,7 @@ public class GorevModel {
         ORTA,
         DUSUK
     }
+
 
     private Priority oncelik;
     private String gorev;
@@ -42,5 +50,21 @@ public class GorevModel {
 
     public void setTarih(Date tarih) {
         this.tarih = tarih;
+    }
+
+    public boolean isDateExpired(SharedPreferenceHelper.SharedName sharedName) {
+        long differenceInMillis = 0;
+        switch (sharedName) {
+            case AYLIK:
+                differenceInMillis = 2629800000L;
+                break;
+            case HAFTALIK:
+                differenceInMillis = 604800000;
+                break;
+            case GUNLUK:
+                differenceInMillis = 86400000;
+                break;
+        }
+        return (new Date().getTime() - tarih.getTime()) >= differenceInMillis;
     }
 }
