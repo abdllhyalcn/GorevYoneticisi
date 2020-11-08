@@ -2,13 +2,7 @@ package com.example.gorevyoneticisi.Models;
 
 import com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper;
 
-import java.util.Calendar;
 import java.util.Date;
-
-import static com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper.SharedName.AYLIK;
-import static com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper.SharedName.GUNLUK;
-import static com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper.SharedName.HAFTALIK;
-
 
 public class GorevModel {
     public enum Priority {

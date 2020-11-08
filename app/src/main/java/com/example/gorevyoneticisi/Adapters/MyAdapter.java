@@ -2,7 +2,6 @@ package com.example.gorevyoneticisi.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +9,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gorevyoneticisi.Helpers.SharedPreferenceHelper;
 import com.example.gorevyoneticisi.Models.GorevModel;
 import com.example.gorevyoneticisi.R;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.SimpleDateFormat;
@@ -38,13 +35,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView, priorityImage;
+        ImageView priorityImage;
         TextView gorevText, tarihText, priorityText;
         Button delete;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+
             priorityImage = itemView.findViewById(R.id.priorityImage);
             gorevText = itemView.findViewById(R.id.gorevText);
             tarihText = itemView.findViewById(R.id.tarihText);
@@ -53,9 +50,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    public MyAdapter(Context context,  List<GorevModel> myDataset, SharedPreferenceHelper.SharedName mSharedName) {
+    public MyAdapter(Context context, List<GorevModel> myDataset, SharedPreferenceHelper.SharedName mSharedName) {
         this.context = context;
-        this.callback=(onDeleteClickedListener) context;
+        this.callback = (onDeleteClickedListener) context;
         mDataset = myDataset;
         sharedName = mSharedName;
     }
